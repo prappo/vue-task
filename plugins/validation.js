@@ -5,7 +5,7 @@ Vue.prototype.$prappoValidator = (type, value) => {
   console.log(value);
 
   if (type == 'only_letters') {
-    if (/^[a-zA-Z]*$/g.test(value)) {
+    if (/^[a-zA-Z\s]*$/g.test(value)) {
       return {
         validation: true,
         message: 'Valid Input',

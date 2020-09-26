@@ -1,13 +1,16 @@
 <template>
   <div>
 
-      <vs-navbar shadow="true" center-collapsed>
+      <vs-navbar center-collapsed>
 
         <vs-navbar-item @click="active = '/'" :active="active == '/'" to="/">
-          Home
+          Create
         </vs-navbar-item>
         <vs-navbar-item @click="active = 'list'" :active="active == 'list'" to="/list">
           List
+        </vs-navbar-item>
+        <vs-navbar-item @click="active = 'update'" :active="active == 'update'" to="/update">
+          Update
         </vs-navbar-item>
 
       </vs-navbar>

@@ -15,7 +15,7 @@
             <PrappoElement v-if="status" :formData="formData"></PrappoElement>
             <hr style="margin-top: 5px;background-color: #F4F7F8">
             <div style="text-align: center;width: 100% !important;">
-              <vs-button :loading="loading" block>Submit</vs-button>
+              <vs-button success :loading="loading" block>Update</vs-button>
             </div>
           </form>
         </template>
@@ -34,7 +34,7 @@
     export default {
         data() {
             return {
-                endPoint: 'https://vuejstask.prappo.repl.co/api/get_form.php',
+                endPoint: 'https://vuejstask.prappo.repl.co/api/get_form.php?id=111',
                 submitEndpoint: 'https://vuejstask.prappo.repl.co/api/submit_form.php',
                 formData: null,
                 status: false,
@@ -44,8 +44,8 @@
                 progress: 0,
                 allValidated: false,
                 images: [
-                    'https://wallpapercart.com/wp-content/uploads/2019/04/120x1200-hd-cowboy-bebop-swordfish-wallpaper.jpg',
-                    'https://i.pinimg.com/originals/44/f4/36/44f436521184885231ff158e27638eb7.jpg',
+                    'https://ffwallpaper.com/thumb/cyberpunk/cyberpunk-5.png',
+                    'https://c4.wallpaperflare.com/wallpaper/843/56/876/ghost-in-the-shell-ghost-in-the-shell-cyberpunk-futuristic-city-wallpaper-preview.jpg',
                 ],
             }
         },
@@ -83,12 +83,6 @@
 
         },
         methods: {
-
-            randomImage(items) {
-
-                return items[Math.floor(Math.random() * items.length)];
-
-            },
             openNotification(position = null, color, title, message) {
                 const noti = this.$vs.notification({
                     color,
@@ -121,6 +115,12 @@
                             this.openNotification('', 'danger', 'Error', 'Something went wrong. Can not submit the form ');
                         });
                 }
+            },
+
+            randomImage(items) {
+
+                return items[Math.floor(Math.random() * items.length)];
+
             }
         }
     }
