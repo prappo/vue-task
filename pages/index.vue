@@ -34,8 +34,8 @@
     export default {
         data() {
             return {
-                endPoint: 'https://vuejstask.prappo.repl.co/api/get_form.php',
-                submitEndpoint: 'https://vuejstask.prappo.repl.co/api/submit_form.php',
+                endPoint: 'https://trino-lab.com/test/api/get_form.php',
+                submitEndpoint: 'https://trino-lab.com/test/api/submit_form.php',
                 formData: null,
                 status: false,
                 active: false,

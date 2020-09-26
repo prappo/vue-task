@@ -34,15 +34,15 @@
     export default {
         data() {
             return {
-                endPoint: 'https://vuejstask.prappo.repl.co/api/get_form.php?id=111',
-                submitEndpoint: 'https://vuejstask.prappo.repl.co/api/submit_form.php',
+                endPoint: 'https://trino-lab.com/test/api/get_form.php?id=111',
+                submitEndpoint: 'https://trino-lab.com/test/api/submit_form.php',
                 formData: null,
                 status: false,
                 active: false,
                 loading: false,
                 time: 6000,
                 progress: 0,
-                allValidated: false,
+                allValidated: true,
                 images: [
                     'https://ffwallpaper.com/thumb/cyberpunk/cyberpunk-5.png',
                     'https://c4.wallpaperflare.com/wallpaper/843/56/876/ghost-in-the-shell-ghost-in-the-shell-cyberpunk-futuristic-city-wallpaper-preview.jpg',
