@@ -39,6 +39,7 @@ export default {
     '@/plugins/vuesax',
     '@/plugins/clone',
     '@/plugins/rule',
+    '@/plugins/validation'
   ],
   /*
   ** Auto import components

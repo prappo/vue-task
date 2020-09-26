@@ -27,6 +27,10 @@
           <PRepeater :name="name" :fieldData="attr"></PRepeater>
         </div>
 
+        <div v-if="attr.type == 'textarea'">
+          <PTextarea :name="name" :fieldData="attr"></PTextarea>
+        </div>
+
 
       </div>
     </div>
@@ -41,6 +45,7 @@ import PSelect from './fields/Select';
 import PHidden from './fields/Hidden';
 import PRadio from './fields/Radio';
 import PRepeater from './fields/Repeater';
+import PTextarea from './fields/TextArea';
 
   export default {
       name: 'PrappoElement',
@@ -52,6 +57,7 @@ import PRepeater from './fields/Repeater';
           PHidden,
           PRadio,
           PRepeater,
+          PTextarea
 
       },
       data(){

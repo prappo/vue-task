@@ -10,18 +10,18 @@
           <img src="https://i.pinimg.com/originals/44/f4/36/44f436521184885231ff158e27638eb7.jpg" alt="">
         </template>
         <template #text>
-      <form>
+          <form @submit="validateDataAndSubmit">
 
-      <PrappoElement v-if="status" :formData="formData"></PrappoElement>
+            <PrappoElement v-if="status" :formData="formData"></PrappoElement>
 
-        <vs-button>Submit</vs-button>
-      </form>
+            <vs-button>Submit</vs-button>
+          </form>
         </template>
 
         <template #interactions>
 
-          <vs-button  class="btn-chat" shadow primary>
-            <i class='bx bx-chat' ></i>
+          <vs-button class="btn-chat" shadow primary>
+            <i class='bx bx-chat'></i>
             <span class="span">
               <marquee> <b>All Submissions ( List ) </b></marquee>
         </span>
@@ -33,64 +33,76 @@
 </template>
 
 <script>
-  import axios from 'axios';
-  import PrappoElement from '~/components/PrappoElement';
+    import axios from 'axios';
+    import PrappoElement from '~/components/PrappoElement';
 
 
-  export default {
-    data() {
-      return {
-        endPoint: 'https://vuejstask.prappo.repl.co/api/get_form.php',
-        formData: null,
-        status: false,
-          active: false,
-          time: 6000,
-          progress: 0
-      }
-    },
-    components: {
-      PrappoElement,
-    },
-    mounted() {
-        const loading = this.$vs.loading({
-            text: 'Loading Form ...'
-        })
-      axios.get(this.endPoint).then((response) => {
-        this.formData = response.data;
-        if(response.data.status == 'success'){
-          loading.close();
-          this.openNotification('top-center','success','Success','Form data loaded successfully')
+    export default {
+        data() {
+            return {
+                endPoint: 'https://vuejstask.prappo.repl.co/api/get_form.php',
+                formData: null,
+                status: false,
+                active: false,
+                time: 6000,
+                progress: 0,
+                allValidated : false,
+            }
+        },
+        components: {
+            PrappoElement,
+        },
+        mounted() {
+            const loading = this.$vs.loading({
+                text: 'Loading Form ...'
+            })
+            axios.get(this.endPoint).then((response) => {
+                this.formData = response.data;
+                if (response.data.status == 'success') {
+                    loading.close();
+                    this.openNotification('top-center', 'success', 'Success', 'Form data loaded successfully')
+                }
+            }).catch((error) => {
+                loading.close()
+                this.openNotification('top-center', 'danger', 'Error', 'Unable to load form data from the given URL. Make sure the Endpoint is live')
+            });
+
+            this.$root.$on('validation_status', filter => {
+                this.allValidated = filter;
+                console.log(filter);
+            })
+
+
+        },
+        watch: {
+            'formData': function (newVal) {
+                if (newVal != null) {
+                    this.status = true;
+                }
+            },
+
+        },
+        methods: {
+            openNotification(position = null, color, title, message) {
+                const noti = this.$vs.notification({
+                    color,
+                    position,
+                    title: title,
+                    text: message
+                })
+            },
+
+            validateDataAndSubmit(e){
+                e.preventDefault();
+                // console.log(e.target.elements);
+                if(!this.allValidated){
+                    this.openNotification('top-center','danger','Ops !','Validation Error. You must input valid data in all fields according to their validation requirements')
+                }else{
+                    this.openNotification('top-center','success','Awesome !','All data validated and submitted');
+                }
+            }
         }
-      }).catch((error) => {
-          loading.close()
-          this.openNotification('top-center','danger','Error','Unable to load form data from the given URL. Make sure the Endpoint is live')
-      });
-
-        this.$root.$on('validation_status', filter => {
-            console.log(filter);
-        })
-
-
-    },
-    watch: {
-      'formData' : function(newVal){
-        if(newVal != null ){
-          this.status = true;
-        }
-      },
-
-    },
-      methods:{
-          openNotification(position = null, color,title,message) {
-              const noti = this.$vs.notification({
-                  color,
-                  position,
-                  title: title,
-                  text: message
-              })
-          }
-      }
-  }
+    }
 </script>
 
 <style>
@@ -99,7 +111,7 @@
     /*width: 500px;*/
   }
 
-  body{
+  body {
     background-color: #F4F7F8;
     font-family: 'Quicksand',
     'Source Sans Pro',
