@@ -1,9 +1,29 @@
 <template>
   <div>
+
+      <vs-navbar shadow="true" center-collapsed>
+
+        <vs-navbar-item @click="active = '/'" :active="active == '/'" to="/">
+          Home
+        </vs-navbar-item>
+        <vs-navbar-item @click="active = 'list'" :active="active == 'list'" to="/list">
+          List
+        </vs-navbar-item>
+
+      </vs-navbar>
+
     <Nuxt />
   </div>
 </template>
-
+<script>
+  export default {
+      data(){
+          return {
+              active : '/'
+          }
+      }
+  }
+</script>
 <style>
 html {
   font-family:

@@ -13,21 +13,15 @@
           <form @submit="validateDataAndSubmit">
 
             <PrappoElement v-if="status" :formData="formData"></PrappoElement>
-
-            <vs-button>Submit</vs-button>
+            <hr style="margin-top: 5px;background-color: #F4F7F8">
+          <div style="text-align: center;width: 100% !important;">
+            <vs-button :loading="loading" block>Submit</vs-button>
+          </div>
           </form>
         </template>
 
-        <template #interactions>
-
-          <vs-button class="btn-chat" shadow primary>
-            <i class='bx bx-chat'></i>
-            <span class="span">
-              <marquee> <b>All Submissions ( List ) </b></marquee>
-        </span>
-          </vs-button>
-        </template>
       </vs-card>
+      <p style="font-size: 15px !important;padding:10px">Made with ♥️ by Prappo</p>
     </div>
   </div>
 </template>
@@ -41,9 +35,11 @@
         data() {
             return {
                 endPoint: 'https://vuejstask.prappo.repl.co/api/get_form.php',
+                submitEndpoint : 'https://vuejstask.prappo.repl.co/api/submit_form.php',
                 formData: null,
                 status: false,
                 active: false,
+                loading : false,
                 time: 6000,
                 progress: 0,
                 allValidated : false,
@@ -54,17 +50,17 @@
         },
         mounted() {
             const loading = this.$vs.loading({
-                text: 'Loading Form ...'
+                type: 'default'
             })
             axios.get(this.endPoint).then((response) => {
                 this.formData = response.data;
                 if (response.data.status == 'success') {
                     loading.close();
-                    this.openNotification('top-center', 'success', 'Success', 'Form data loaded successfully')
+                    this.openNotification('top-left', 'success', 'Success', 'Form data loaded successfully')
                 }
             }).catch((error) => {
                 loading.close()
-                this.openNotification('top-center', 'danger', 'Error', 'Unable to load form data from the given URL. Make sure the Endpoint is live')
+                this.openNotification('top-left', 'danger', 'Error', 'Unable to load form data from the given URL. Make sure the Endpoint is live')
             });
 
             this.$root.$on('validation_status', filter => {
@@ -93,12 +89,27 @@
             },
 
             validateDataAndSubmit(e){
+                this.loading = true;
                 e.preventDefault();
                 // console.log(e.target.elements);
                 if(!this.allValidated){
-                    this.openNotification('top-center','danger','Ops !','Validation Error. You must input valid data in all fields according to their validation requirements')
+                    this.openNotification('top-left','danger','Ops !','Validation Error. You must input valid data in all fields according to their validation requirements')
                 }else{
-                    this.openNotification('top-center','success','Awesome !','All data validated and submitted');
+                    this.openNotification('top-left','success','Awesome !','All data validated');
+                    axios.get(this.submitEndpoint)
+                        .then((response) => {
+                            console.log(response.data);
+                            this.loading = false;
+                            if(response.data.status == 'success'){
+                                this.openNotification('top-left','success','Yahooo !','Form data submitted success fully . <br> And it said' + response.data.messages[0]);
+                            }
+
+                        })
+                        .catch((error) => {
+                           this.loading = false;
+                           console.log(error);
+                           this.openNotification('','danger','Error','Something went wrong. Can not submit the form ');
+                        });
                 }
             }
         }
@@ -107,6 +118,7 @@
 
 <style>
   .app {
+    margin-top: 20px;
     /*padding: 10px;*/
     /*width: 500px;*/
   }
